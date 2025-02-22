@@ -1,1 +1,101 @@
+# application.yml (shared properties for all services)
+logging:
+  pattern:
+    console: ${LOGPATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
+  level:
+    root: INFO
+    org.springframework: WARN
+    com.yourcompany: DEBUG
+
+spring:
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: "UTC"
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+# Service specific configuration (example-service.yml)
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydb
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+  
+  redis:
+    host: localhost
+    port: 6379
+    password: ${REDIS_PASSWORD}
+    
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: my-group
+      auto-offset-reset: earliest
+    
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://auth.yourcompany.com
+          
+app:
+  feature-flags:
+    newFeature: true
+    betaFeature: false
+  
+  cors:
+    allowed-origins: 
+      - https://yourcompany.com
+      - https://dev.yourcompany.com
+    
+  retry:
+    max-attempts: 3
+    initial-interval: 1000
+    multiplier: 2.0
+    
+  cache:
+    ttl: 3600
+    
+  external-services:
+    payment-service:
+      url: https://payments.yourcompany.com
+      timeout: 5000
+    notification-service:
+      url: https://notifications.yourcompany.com
+      timeout: 3000
+
+# Environment specific (example-service-prod.yml)
+spring:
+  datasource:
+    url: jdbc:postgresql://prod-db.yourcompany.com:5432/mydb
+    hikari:
+      maximum-pool-size: 50
+      
+logging:
+  level:
+    root: WARN
+    com.yourcompany: INFO
+
+app:
+  feature-flags:
+    betaFeature: true
+  external-services:
+    payment-service:
+      url: https://prod-payments.yourcompany.com
 test: client-service
