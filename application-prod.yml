@@ -1,0 +1,3 @@
+logging:
+  pattern:
+    console: ${LOGPATTERN_CONSOLE:%blue(%d{HH:mm:ss.SSS}) %red(%-5level) %green([%thread]) %yellow(%logger{15}) - %msg%n}
