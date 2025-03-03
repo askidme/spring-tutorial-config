@@ -9,6 +9,13 @@ eureka:
     register-with-eureka:  true
     service-url:
       defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
 # okta:
 #   oauth2:
 #     issuer: https://dev-35001248.okta.com/oauth2/default
